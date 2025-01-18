@@ -58,6 +58,14 @@ All details present in the [notebook file](cosine_similarity/notebook.ipynb)
 
 ### Neural Network Chatbot
 
-Future section....
+The Neural Network Chatbot is composed of 3 layers: an input layer, a hidden layer, and an output layer. The input layer is a Bag of Words (BoW) representation of the input sentence.
 
-The dataset used for the training was obtained at [Kaggle](https://www.kaggle.com/datasets/jiscecseaiml/mental-health-dataset).
+The dataset used for the training was obtained at [Kaggle](https://www.kaggle.com/datasets/jiscecseaiml/mental-health-dataset), which contains an array with intents, each having a tag, a list of patterns, and a list of responses. The output layer has a number of classes/neurons equal to the number of tags present in the dataset (in this case, 80).
+
+The training is done as follows:
+
+1. Get all words (from the patterns) and tags
+2. Preprocess the data
+3. Get bags of words (X) and tags (y)
+4. Train the model
+
