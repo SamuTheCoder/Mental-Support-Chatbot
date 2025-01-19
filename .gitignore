@@ -1,2 +1,45 @@
 .venv*/
 neural_network/__pycache__/
+
+# Node.js dependencies
+node_modules/
+
+# Build files
+build/
+dist/
+
+# Cache files
+*.log
+.cache/
+*.swp
+
+# Environment variables
+.env
+
+# Python-related
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.swp
+
+# Virtual environment
+env/
+venv/
+.virtualenv/
+
+# PyTorch models
+*.pth
+
+# Environment variables
+*.env
+
+# Django-related
+db.sqlite3  # Ignore SQLite database file
+*.log
+/media/  # Ignore media files (if any uploaded by users)
+staticfiles/  # If `collectstatic` output is here
+node_modules/  # If you use npm/yarn for frontend assets in the backend
+
+# Secrets
+config/settings/local.py  # If you have separate settings for local use
