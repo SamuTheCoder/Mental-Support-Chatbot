@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import './CSS/styles.css';
 import React, { useState } from "react";
 
 function App() {
@@ -17,24 +18,37 @@ function App() {
         setInput("");
     };
 
+    const handleKeyDown = (e) => {
+        if(e.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
     return (
-        <div>
-            <h1>Chatbot</h1>
-            <div>
-                {messages.map((msg, index) => (
-                    <div key={index}>
-                        <p><strong>User:</strong> {msg.user}</p>
-                        <p><strong>Bot:</strong> {msg.bot}</p>
+        <div className='body'>
+            <div className='centered'>
+                <div className='chatbot-title'>Mental Support Chatbot</div>
+                <div className='chat-container'>
+                    <div className='chat-messages-container'>
+                        {messages.map((msg, index) => (
+                            <div key={index} className='in-out-container'>
+                                <p className='message user'><strong>User:</strong> {msg.user}</p>
+                                <p className='message bot'><strong>Bot:</strong> {msg.bot}</p>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                    <div className='input-container'>
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Type your message"
+                        />
+                        <button className='button' onClick={sendMessage}>Send</button>
+                    </div>
+                </div>
             </div>
-            <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message"
-            />
-            <button onClick={sendMessage}>Send</button>
         </div>
     );
 }
