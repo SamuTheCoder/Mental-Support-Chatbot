@@ -2,11 +2,14 @@ import numpy as np
 import json
 
 import torch
+import matplotlib.pyplot as plt
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
 from data_processing import tokenize, stem, bag_of_words
 from model import NeuralNet
+
+import csv
 
 # Get data from json file
 with open("KB.json", "r") as f:
@@ -86,24 +89,54 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Train the model
-for epoch in range(num_epochs):
-    for (words, labels) in train_loader:
-        words = words.to(device)
-        labels = labels.to(device)
 
-        # Forward pass
-        outputs = model(words)
-        loss = criterion(outputs, labels)
+#Loss accross all batches in an epoch
+running_loss = 0.0
 
-        # Backward and optimize
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+patience = 5 
+best_loss = float('inf')
+trigger_times = 0
 
-    if (epoch+1) % 100 == 0:
-        print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
+with open("training.csv", mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(["Epoch", "Loss"])
 
-print(f'Final epoch {num_epochs} reached, final loss: {loss.item():.4f}')
+    for epoch in range(num_epochs):
+        running_loss = 0.0
+        for (words, labels) in train_loader:
+            words = words.to(device)
+            labels = labels.to(device)
+
+            # Forward pass
+            outputs = model(words)
+            # Loss for current batch
+            loss = criterion(outputs, labels)
+
+            # Backward and optimize
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item()
+
+        epoch_loss = running_loss/len(train_loader)
+        print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss:.4f}")
+        writer.writerow([epoch+1, epoch_loss])
+
+        # Early stopping logic
+        if epoch_loss < best_loss:
+            best_loss = epoch_loss
+            trigger_times = 0  # Reset patience counter
+        else:
+            trigger_times += 1
+            print(f"No improvement for {trigger_times} epochs.")
+
+            if trigger_times >= patience:
+                print(f"Early stopping triggered at epoch {epoch + 1}. Best loss: {best_loss:.4f}")
+                break
+
+print("Training complete.")
+print(f"Final loss: {running_loss/len(train_loader):.4f}")
 
 data = {
     "model_state": model.state_dict(),
@@ -119,4 +152,22 @@ torch.save(data, FILE)
 
 print(f'Training complete. File saved to {FILE}')
 
+print('Plotting loss graph...')
+
+epochs = []
+losses = []
+with open("training.csv", mode='r') as file:
+    reader = csv.reader(file)
+    next(reader)
+    for row in reader:
+        epochs.append(int(row[0]))
+        losses.append(float(row[1]))
+
+plt.plot(epochs, losses, label='Training loss', marker='o', color='r', linestyle='-')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.title('Training Loss Over Epochs')
+plt.grid(True)
+plt.savefig('loss.png')
+print('Loss graph saved to loss.png')
 

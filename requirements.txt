@@ -1,6 +1,11 @@
-numpy
-pandas
-scikit-learn
-nltk
-re
-torch
+asgiref==3.8.1
+Django==5.1.5
+numpy==2.2.1
+torch==2.5.1
+nltk==3.9.1
+pandas==2.2.3
+python-dateutil==2.9.0.post0
+pytz==2024.2
+sqlparse==0.5.3
+traitlets==5.14.3
+matplotlib==3.9.0

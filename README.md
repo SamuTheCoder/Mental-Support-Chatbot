@@ -69,3 +69,25 @@ The training is done as follows:
 3. Get bags of words (X) and tags (y)
 4. Train the model
 
+## Chatbot Web App
+
+The chatbot web app was developed using Django and React. To run the web app, follow the steps below:
+
+1. Install Django (on the requirements.txt file, Django is already included)
+2. Run the following command to run the server:
+
+```bash
+python manage.py runserver
+```
+3. Run the following command to run the React app:
+
+```bash
+npm start
+```
+
+
+<video width="640" height="360" controls fullscreen>
+  <source src="web_app.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
