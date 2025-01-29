@@ -86,8 +86,5 @@ npm start
 ```
 
 
-<video width="640" height="360" controls fullscreen>
-  <source src="web_app.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[Download the showcase video](web_app.mp4)
 
